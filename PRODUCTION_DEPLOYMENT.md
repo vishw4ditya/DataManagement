@@ -73,20 +73,23 @@ pm2 startup
 - [ ] Configure a firewall to only allow ports 80, 443, and SSH.
 - [ ] Regularly backup the `data.db` file.
 
-## 7. Nginx Configuration Example
+## 8. Render Deployment (Special Instructions)
 
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
+### Persistent Data (SQLite)
 
-    location / {
-        proxy_pass http://localhost:5000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
+Render's filesystem is ephemeral on the **Free plan**, meaning your database will be reset every time the server restarts.
+
+To keep your data permanently:
+
+1.  Upgrade to a **Starter** plan on Render.
+2.  Go to your service settings -> **Disks**.
+3.  Add a Disk with:
+    - **Name**: `data-storage`
+    - **Mount Path**: `/opt/render/project/src/data`
+4.  The application is already configured to use `/opt/render/project/src/data/database.sqlite`.
+
+### Deployment Settings
+
+- **Build Command**: `npm run build`
+- **Start Command**: `node server/index.js`
+- **Environment Variables**: Add all variables from `.env.example`.

@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 // Get API URL from environment or use default
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// In production, if served from the same domain, we can use relative path
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : (process.env.REACT_APP_API_URL || 'http://localhost:5000/api');
 
 console.log('🔧 API Base URL:', API_URL);
 

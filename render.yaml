@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: data-management-system
+    env: node
+    plan: free # Change to 'starter' if you need a persistent disk
+    buildCommand: npm run build
+    startCommand: node server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /opt/render/project/src/data/database.sqlite
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: '*' # Update this to your actual domain after deployment
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+    # Optional: Uncomment if you use a paid Render plan to keep data permanent
+    # disk:
+    #   name: data-storage
+    #   mountPath: /opt/render/project/src/data
+    #   sizeGB: 1
+
